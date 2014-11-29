@@ -13,12 +13,12 @@ import java.util.Vector;
 public class ConnectionPool {
     private ArrayList<DBConnection> free;
     private ArrayList<DBConnection> used;
-    private String driver, db,  usr, pw, url;
+    private String driver, db, usr, pw, url;
     private int minsize, maxsize, stepsize;
 
     private static ConnectionPool pool = null;
 
-    private ConnectionPool(){
+    private ConnectionPool() {
 
         try {
             ResourceBundle rb = ResourceBundle.getBundle("mypack.connectionpool");
@@ -34,13 +34,13 @@ public class ConnectionPool {
             free = new ArrayList<>();
             used = new ArrayList<>();
             instantiate(minsize);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void instantiate(int size){
-        try{
+    private void instantiate(int size) {
+        try {
             DBConnection con;
 
             for (int i = 0; i < size; i++) {
@@ -48,40 +48,40 @@ public class ConnectionPool {
                 con.connect(driver, url, db, usr, pw);
                 free.add(con);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private synchronized boolean createMoreConnections(){
+    private synchronized boolean createMoreConnections() {
         int current = free.size() - used.size();
         int n = Math.min(maxsize - current, stepsize); //We find the smaller number
 
-        if (n > 0){
+        if (n > 0) {
             System.out.println("Creating " + n + " new connections...");
             instantiate(n); //Interesting way to instantiate more connections
         }
         return n > 0;
     }
 
-    public synchronized boolean availableConnections(){
+    public synchronized boolean availableConnections() {
         return (free.size() > 0 || maxsize > used.size());
     }
 
-    public String toString(){
+    public String toString() {
         return "Free connections: " + free.size() +
                 ", used connections: " + used.size();
     }
 
-    public synchronized static ConnectionPool getPool(){
+    public synchronized static ConnectionPool getPool() {
         pool = (pool == null) ? new ConnectionPool() : pool;
         return pool;
     }
 
-    public synchronized DBConnection getDBConnection(){
-        if(free.size() == 0){ //If there aren't an free connections
-            if(!createMoreConnections()){
-               throw new RuntimeException("Not enough connections");
+    public synchronized DBConnection getDBConnection() {
+        if (free.size() == 0) { //If there aren't an free connections
+            if (!createMoreConnections()) {
+                throw new RuntimeException("Not enough connections");
             }
         }
         DBConnection dbc = free.remove(0);
@@ -90,11 +90,11 @@ public class ConnectionPool {
         return dbc;
     }
 
-    public synchronized void releaseConnection(DBConnection dbc){
+    public synchronized void releaseConnection(DBConnection dbc) {
         boolean ok = used.remove(dbc);
 
-        if(ok){
-            if (free.size() >= minsize){
+        if (ok) {
+            if (free.size() >= minsize) {
                 dbc.close();
                 System.out.println("Deleting 1 connection...");
             } else {
@@ -106,13 +106,13 @@ public class ConnectionPool {
         }
     }
 
-    public synchronized void close(){
-        try{
-            for(DBConnection dbc : free)
+    public synchronized void close() {
+        try {
+            for (DBConnection dbc : free)
                 dbc.close();
-            for(DBConnection dbc : used)
+            for (DBConnection dbc : used)
                 dbc.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }

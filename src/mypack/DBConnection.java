@@ -1,4 +1,5 @@
 package mypack;
+
 import java.sql.*;
 
 /**
@@ -12,7 +13,7 @@ public class DBConnection {
         String sb = "jdbc:" + sgdb + "://" + ip + ":" + port + "/" + db;
 
         try {
-            Class.forName ("org.postgresql.Driver");
+            Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection(sb, user, key);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (ClassNotFoundException e) {
@@ -25,17 +26,15 @@ public class DBConnection {
     public void connect(String driver, String url, String db, String user, String key) {
 
         try {
-            Class.forName (driver);
+            Class.forName(driver);
             con = DriverManager.getConnection(url + db, user, key);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public ResultSet open(String query) throws NullPointerException{
+    public ResultSet open(String query) throws NullPointerException {
         ResultSet ret = null;
 
         try {
@@ -47,7 +46,7 @@ public class DBConnection {
         return ret;
     }
 
-    public void exec(String query){
+    public void exec(String query) {
         try {
             stmt.execute(query);
         } catch (SQLException e) {
@@ -63,7 +62,7 @@ public class DBConnection {
         }
     }
 
-    public JSON getAsJSON(String query, String na){
+    public JSON getAsJSON(String query, String na) {
         ResultSet rs = open(query);
         ResultSetMetaData rsmd;
         JSON[] row;
@@ -123,7 +122,7 @@ public class DBConnection {
         return result;
     }
 
-    public JSON getAsJSON(String query){
+    public JSON getAsJSON(String query) {
         ResultSet rs = open(query);
         ResultSetMetaData rsmd;
         JSON[] row;

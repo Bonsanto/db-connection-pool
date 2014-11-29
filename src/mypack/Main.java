@@ -23,7 +23,7 @@ public class Main {
             threads[i].start();
         }
 
-        while(!allAlive(threads)){
+        while (!allAlive(threads)) {
             try {
                 Thread.sleep(500);
                 //System.out.print(".");
@@ -66,15 +66,15 @@ public class Main {
     }
 
 
-    public static boolean allAlive(QueryThread t[]){
+    public static boolean allAlive(QueryThread t[]) {
         boolean status = true;
-        for (QueryThread th : t){
-            if(th.isAlive()){
+        for (QueryThread th : t) {
+            if (th.isAlive()) {
                 status = false;
                 break;
             }
         }
-        return  status;
+        return status;
     }
 
 }

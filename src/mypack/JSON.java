@@ -19,10 +19,10 @@ public class JSON {
     }
 
     //TODO: FIX A BUG WHEN YOU USE THE JSON CONSTRUCTOR.
-    public void addAttribute(String attribute, Object value){
-    	StringBuilder concat = new StringBuilder();
+    public void addAttribute(String attribute, Object value) {
+        StringBuilder concat = new StringBuilder();
 
-        if(isArray(value)){
+        if (isArray(value)) {
             int length = Array.getLength(value);
             Object[] list = new Object[length];
             for (int i = 0; i < length; i++) list[i] = Array.get(value, i);
@@ -53,7 +53,7 @@ public class JSON {
         }
     }
 
-    public void addAttribute(String attribute, Object[] value){
+    public void addAttribute(String attribute, Object[] value) {
         StringBuilder concat = new StringBuilder();
         concat.append(json);
         concat.append($s);
@@ -62,8 +62,8 @@ public class JSON {
         concat.append(":[");
         json = concat.toString();
 
-        for (int i = 0; i <value.length; i++) {
-            if(value[i] instanceof JSON){
+        for (int i = 0; i < value.length; i++) {
+            if (value[i] instanceof JSON) {
                 concat.append(((JSON) value[i]).json);
                 concat.append(", ");
                 json = concat.toString();
@@ -79,27 +79,27 @@ public class JSON {
                 json = concat.toString();
             }
         }
-        if(value.length > 0){
-	        concat.delete(0,concat.length());
-	        concat.append(json.substring(0, json.length() - 2));
-	        concat.append("], ");
-	        json = concat.toString();
+        if (value.length > 0) {
+            concat.delete(0, concat.length());
+            concat.append(json.substring(0, json.length() - 2));
+            concat.append("], ");
+            json = concat.toString();
         } else {
-	        concat.append("], ");
-	        json = concat.toString();
+            concat.append("], ");
+            json = concat.toString();
         }
-        
+
     }
 
-    public void build(){
-    	StringBuilder concat = new StringBuilder();
+    public void build() {
+        StringBuilder concat = new StringBuilder();
         concat.append(json.substring(0, json.length() - 2));
         concat.append("}");
         json = concat.toString();
     }
 
     //To solve a obsolete, prehistoric and primitive problem.
-    private boolean isArray(Object obj){
+    private boolean isArray(Object obj) {
         return (obj != null && obj.getClass().isArray());
     }
 }
