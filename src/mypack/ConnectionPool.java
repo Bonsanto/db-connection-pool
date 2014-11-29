@@ -1,15 +1,8 @@
 package mypack;
 
-import org.omg.SendingContext.RunTime;
-
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
-/**
- * Created by Bonsanto on 9/9/2014.
- */
 public class ConnectionPool {
     private ArrayList<DBConnection> free;
     private ArrayList<DBConnection> used;

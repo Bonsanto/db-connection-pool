@@ -2,9 +2,6 @@ package mypack;
 
 import java.sql.*;
 
-/**
- * Created by Alberto Bonsanto on 17/07/2014.
- */
 public class DBConnection {
     private Connection con = null;
     private Statement stmt = null;

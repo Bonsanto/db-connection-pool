@@ -2,9 +2,6 @@ package mypack;
 
 import java.sql.ResultSet;
 
-/**
- * Created by Bonsanto on 9/9/2014.
- */
 public class QueryThread extends Thread {
     private String id;
     private String query = "Select * from product"; //where id_product < 100000";
